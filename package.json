@@ -1,0 +1,39 @@
+{
+  "name": "hubot-timezones-hipchat",
+  "description": "Display timezones for team from hipchat API",
+  "version": "0.0.1",
+  "author": "@benwtr",
+  "license": "MIT",
+  "keywords": [
+    "hubot",
+    "hubot-scripts",
+    "timezones",
+    "hipchat"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hubot-scripts/hubot-timezones-hipchat.git"
+  },
+  "dependencies": {
+    "coffee-script": "~1.6",
+    "moment-timezone": "^0.5.7",
+    "sync-request": "^3.0.1"
+  },
+  "devDependencies": {
+    "chai": "*",
+    "grunt": "^1.0.1",
+    "grunt-contrib-watch": "^0.5.3",
+    "grunt-mocha-test": "~0.7.0",
+    "grunt-release": "^0.6.1",
+    "hubot": "^2.19.0",
+    "matchdep": "~0.1.2",
+    "mocha": "*",
+    "sinon": "*",
+    "sinon-chai": "*"
+  },
+  "main": "index.coffee",
+  "scripts": {
+    "test": "grunt test",
+    "start": "hubot --adapter shell --disable-httpd --require src"
+  }
+}
