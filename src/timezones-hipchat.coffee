@@ -1,11 +1,13 @@
 # Description
-#   Display timezones for team (users in current room) from hipchat API
+#   Display timezones for team (users in a given room) from hipchat API
 #
 # Configuration:
 #   HUBOT_TIMEZONES_HIPCHAT_TOKEN
+#   HUBOT_TIMEZONES_DEFAULT_ROOM - id or name of default room to use
 #
 # Commands:
-#   hubot tz - Show timezones for users in the current room from hipchat API
+#   hubot tz - Show timezones for users in the default room
+#   hubot tz <room_id_or_name> - Show timezones for users in the given room
 #
 # Dependencies:
 #   sync-request
@@ -22,6 +24,7 @@
 HC_API = 'https://api.hipchat.com/v2'
 
 AUTH_TOKEN = process.env.HUBOT_TIMEZONES_HIPCHAT_TOKEN
+DEFAULT_ROOM = process.env.HUBOT_TIMEZONES_DEFAULT_ROOM
 
 request = require 'sync-request'
 moment = require 'moment-timezone'
@@ -34,6 +37,7 @@ sync_get = (url) ->
   JSON.parse r.getBody()
 
 get_room_tzdata = (robot, room) ->
+  room = encodeURIComponent(room)
   url = "#{HC_API}/room/#{room}/participant?include-offline=true"
   ids = (person.id for person in sync_get(url).items)
   user_data = (sync_get("#{HC_API}/user/#{id}") for id in ids)
@@ -52,12 +56,17 @@ format_output = (tz_data) ->
     formatted_time = time.format('ddd hh:mmA').pad_r 11
     names = (user.mention_name for user in users).join(', ')
     "[#{formatted_time} #{tz} #{tz_name.pad_r tz_pad}] #{names}\n"
-  output.sort().join('')   # should be sorting by offset instead of string
+  output.sort().join('')   # todo: sort by offset instead of string
 
 
 module.exports = (robot) ->
 
-  robot.respond /tz/i, (msg) ->
-    room = msg.envelope.room
+  robot.respond /tz (.*)$/i, (msg) ->
+    room = msg.match[1]
+    tz_data = get_room_tzdata robot, room
+    msg.reply(format_output(tz_data))
+
+  robot.respond /tz$/i, (msg) ->
+    room = DEFAULT_ROOM
     tz_data = get_room_tzdata robot, room
     msg.reply(format_output(tz_data))

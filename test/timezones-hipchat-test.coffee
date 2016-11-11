@@ -13,5 +13,5 @@ describe 'timezones-hipchat', ->
     require('../src/timezones-hipchat')(@robot)
 
   it 'registers a respond listener', ->
-    expect(@robot.respond).to.have.been.calledWith(/tz/i)
+    expect(@robot.respond).to.have.been.calledWith(/tz$/i)
 
