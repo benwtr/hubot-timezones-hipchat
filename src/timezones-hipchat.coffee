@@ -5,9 +5,9 @@
 #   HUBOT_TIMEZONES_HIPCHAT_TOKEN
 #
 # Commands:
-#   tz - Show timezones for users in the current room from hipchat API
+#   hubot tz - Show timezones for users in the current room from hipchat API
 #
-# Requires:
+# Dependencies:
 #   sync-request
 #   moment-timezone
 #
