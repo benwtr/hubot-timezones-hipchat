@@ -1,7 +1,7 @@
 {
   "name": "hubot-timezones-hipchat",
   "description": "Display timezones for team from hipchat API",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "@benwtr",
   "license": "MIT",
   "keywords": [
