@@ -64,9 +64,9 @@ module.exports = (robot) ->
   robot.respond /tz (.*)$/i, (msg) ->
     room = msg.match[1]
     tz_data = get_room_tzdata robot, room
-    msg.reply(format_output(tz_data))
+    msg.reply('/code ' + format_output(tz_data))
 
   robot.respond /tz$/i, (msg) ->
     room = DEFAULT_ROOM
     tz_data = get_room_tzdata robot, room
-    msg.reply(format_output(tz_data))
+    msg.reply('/code ' + format_output(tz_data))
