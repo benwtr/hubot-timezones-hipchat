@@ -29,9 +29,6 @@ DEFAULT_ROOM = process.env.HUBOT_TIMEZONES_DEFAULT_ROOM
 request = require 'sync-request'
 moment = require 'moment-timezone'
 
-String.prototype.pad_r = (l,c) ->
-  this+Array(l-this.length+1).join(c||" ")
-
 sync_get = (url) ->
   r = request 'GET', url, {headers: {'Authorization': "Bearer #{AUTH_TOKEN}"}}
   JSON.parse r.getBody()
@@ -48,14 +45,13 @@ get_room_tzdata = (robot, room) ->
   tz_data
 
 format_output = (tz_data) ->
-  tz_pad = Math.max.apply @, (tz_name.length for tz_name, _ of tz_data)
   current_time = new Date().getTime()
   output = for tz_name, users of tz_data
     time = moment(current_time).tz(tz_name)
-    tz = time.format('ZZ z').pad_r 10
-    formatted_time = time.format('ddd hh:mmA').pad_r 11
+    tz = time.format('ZZ z')
+    formatted_time = time.format('ddd hh:mmA')
     names = (user.mention_name for user in users).join(', ')
-    "[#{formatted_time} #{tz} #{tz_name.pad_r tz_pad}] #{names}\n"
+    "[#{formatted_time} #{tz} #{tz_name}] #{names}\n"
   output.sort().join('')   # todo: sort by offset instead of string
 
 
